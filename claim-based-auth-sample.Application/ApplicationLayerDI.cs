@@ -19,6 +19,6 @@ public static class ApplicationLayerDI
     
     public static void AddServices(this IServiceCollection services, IConfiguration configuration)
     {
-        
+        services.AddScoped<INotesService, NotesService>();
     }
 }

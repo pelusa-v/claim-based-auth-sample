@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace claim_based_auth_sample.DataAccess;
 
-public class NoteRepository : ICommonCrud<Note>
+public class NoteRepository : ICommonCrudRepository<Note>
 {
     private readonly IConfiguration _configuration;
     private readonly AppDbContext _appDbContext;

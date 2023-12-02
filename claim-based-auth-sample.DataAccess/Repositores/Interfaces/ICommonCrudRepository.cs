@@ -1,6 +1,6 @@
 ﻿namespace claim_based_auth_sample.DataAccess;
 
-public interface ICommonCrud<T>
+public interface ICommonCrudRepository<T>
 {
     Task<T> Create(T entity);
     Task<T> Update(T entity);

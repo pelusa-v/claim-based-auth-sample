@@ -13,7 +13,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDataAccessLayer(builder.Configuration)
     .AddApplicationLayer(builder.Configuration)
-    .AddAPILayerDILayer(builder.Configuration);
+    .AddAPILayer(builder.Configuration);
 
 var app = builder.Build();
 
@@ -25,6 +25,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(corsPolicyBuilder =>
+    corsPolicyBuilder
+        .AllowAnyHeader()
+        .AllowAnyOrigin()
+    );
 
 app.UseAuthentication();
 app.UseAuthorization();

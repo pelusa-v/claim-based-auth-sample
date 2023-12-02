@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using claim_based_auth_sample.Core;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,7 +23,7 @@ public static class DataAccessLayerDI
 
     public static void AddRepositories(this IServiceCollection services, IConfiguration configuration)
     {
-        
+        services.AddScoped<ICommonCrudRepository<Note>, NoteRepository>();
     }
 
     public static void AddIdentityEntities(this IServiceCollection services, IConfiguration configuration)
