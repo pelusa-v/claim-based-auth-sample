@@ -14,7 +14,7 @@ public static class ApplicationLayerDI
 
     public static void RegisterAutoMapper(this IServiceCollection services, IConfiguration configuration)
     {
-        
+        services.AddAutoMapper(typeof(AutoMapperMarker));
     }
     
     public static void AddServices(this IServiceCollection services, IConfiguration configuration)
