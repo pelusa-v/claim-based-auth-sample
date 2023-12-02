@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,7 +17,7 @@ public static class DataAccessLayerDI
 
     public static void AddDatabaseConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
-
+        services.AddDbContext<AppDbContext>(options => options.UseMySQL(configuration.GetConnectionString("Db")));
     }
 
     public static void AddRepositories(this IServiceCollection services, IConfiguration configuration)
