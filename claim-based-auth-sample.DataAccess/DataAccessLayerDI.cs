@@ -22,7 +22,7 @@ public static class DataAccessLayerDI
 
     public static void AddRepositories(this IServiceCollection services, IConfiguration configuration)
     {
-
+        
     }
 
     public static void AddIdentityEntities(this IServiceCollection services, IConfiguration configuration)
