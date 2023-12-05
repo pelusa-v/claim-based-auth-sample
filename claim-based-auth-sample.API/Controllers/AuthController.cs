@@ -46,7 +46,7 @@ namespace claim_based_auth_sample.API.Controllers
             }
         }
 
-        [HttpPost("token/create")]
+        [HttpPost("login")]
         public async Task<ActionResult<AuthResponseDTO>> LogIn(UserCredentialsDTO credentials)
         {
             var identityRes = await _signInManager.PasswordSignInAsync(credentials.Email, credentials.Password, isPersistent: false, lockoutOnFailure: false);
@@ -65,7 +65,7 @@ namespace claim_based_auth_sample.API.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<AuthResponseDTO>> RefreshToken()
         {
-            var userEmailclaim = HttpContext.User.Claims.Where(claim => claim.Type == "email").FirstOrDefault();
+            var userEmailclaim = HttpContext.User.Claims.Where(claim => claim.Type == ClaimTypes.Email).FirstOrDefault();
             var userEmail = userEmailclaim.Value;
             var userCredentials = new UserCredentialsDTO()
             {
@@ -75,22 +75,28 @@ namespace claim_based_auth_sample.API.Controllers
             return await BuildToken(userCredentials);
         }
 
-        [HttpPost("token/revoke")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<AuthResponseDTO>> RevokeToken()
-        {
-            // var userEmailClaim = HttpContext.User.Claims.Where(claim => claim.Type == "email").FirstOrDefault();
-            // var user = await _userManager.FindByEmailAsync(userEmailClaim.Value);
-            // _userManager.RemoveClaimAsync(user, userEmailClaim);
-            throw new NotImplementedException("");
-        }
+        // [HttpPost("grant/admin")]
+        // public async Task<ActionResult> GrantAdmin(GrantAdminAuthorizationDTO grantAdminDTO)
+        // {
+        //     var user = await _userManager.FindByEmailAsync(grantAdminDTO.Email);
+        //     await _userManager.AddClaimAsync(user, new Claim("admin", ""));
+        //     return NoContent();
+        // }
+
+        // [HttpPost("revoke/admin")]
+        // public async Task<ActionResult> RevokeAdmin(GrantAdminAuthorizationDTO grantAdminDTO)
+        // {
+        //     var user = await _userManager.FindByEmailAsync(grantAdminDTO.Email);
+        //     await _userManager.RemoveClaimAsync(user, new Claim("admin", null));
+        //     return NoContent();
+        // }
 
         private async Task<AuthResponseDTO> BuildToken(UserCredentialsDTO authCredentials)
         {
             var claims = new List<Claim>()
             {
-                new Claim("email", authCredentials.Email),
-                new Claim("user_name", "Put name here!")
+                new Claim(ClaimTypes.Email, authCredentials.Email),
+                new Claim(ClaimTypes.Name, "Put name here!")
             };
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["TemporalSecretKey"]));
