@@ -17,7 +17,7 @@ public class NoteRepository : ICommonCrudRepository<Note>
 
     public async Task<Note> Create(Note note)
     {
-        await _appDbContext.Notes.AddAsync(note);
+        _appDbContext.Notes.Add(note);
         await _appDbContext.SaveChangesAsync();
         return note;
     }

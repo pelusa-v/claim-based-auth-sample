@@ -11,8 +11,8 @@ using claim_based_auth_sample.DataAccess;
 namespace claim_based_auth_sample.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231202003407_Note, Identity entities")]
-    partial class NoteIdentityentities
+    [Migration("20231205042107_NoteId")]
+    partial class NoteId
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -226,7 +226,12 @@ namespace claim_based_auth_sample.DataAccess.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("OwnerId")
+                        .HasColumnType("varchar(255)");
+
                     b.HasKey("NoteId");
+
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("Notes");
                 });
@@ -280,6 +285,15 @@ namespace claim_based_auth_sample.DataAccess.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("claim_based_auth_sample.Core.Note", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId");
+
+                    b.Navigation("Owner");
                 });
 #pragma warning restore 612, 618
         }

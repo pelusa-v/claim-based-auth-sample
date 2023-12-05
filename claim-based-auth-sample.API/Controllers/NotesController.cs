@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using claim_based_auth_sample.Application;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace claim_based_auth_sample.API.Controllers
@@ -15,8 +16,10 @@ namespace claim_based_auth_sample.API.Controllers
     public class NotesController : ControllerBase
     {
         private readonly INotesService _notesService;
-        public NotesController(INotesService notesService)
+        private readonly UserManager<IdentityUser> _userManager;
+        public NotesController(INotesService notesService, UserManager<IdentityUser> userManager)
         {
+            _userManager = userManager;
             _notesService = notesService;
         }
 
@@ -33,7 +36,10 @@ namespace claim_based_auth_sample.API.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "admin")]
         public async Task<ActionResult<NoteDTO>> CreateNote(CreateNoteDTO dto)
         {
-            return await _notesService.CreateNote(dto, "");
+            var userEmailClaim = HttpContext.User.Claims.Where(c => c.Type == ClaimTypes.Email).FirstOrDefault();
+            var userEmail = userEmailClaim.Value;
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            return await _notesService.CreateNote(dto, user.Id);
         }
     }
 }

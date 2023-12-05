@@ -99,6 +99,10 @@ namespace claim_based_auth_sample.API.Controllers
                 new Claim(ClaimTypes.Name, "Put name here!")
             };
 
+            var user = await _userManager.FindByEmailAsync(authCredentials.Email);
+            var claimsDb = await _userManager.GetClaimsAsync(user);  // get all claims in db for this user
+            claims.AddRange(claimsDb);
+
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["TemporalSecretKey"]));
             var tokenCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var expiration = DateTime.UtcNow.AddHours(2);
