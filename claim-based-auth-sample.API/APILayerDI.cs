@@ -30,6 +30,10 @@ public static class APILayerDI
 
     public static void AddAuthorizationConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
-
+        services.AddAuthorization(options => 
+        {
+            options.AddPolicy("admin", policy => policy.RequireClaim("admin"));
+            options.AddPolicy("guest", policy => policy.RequireClaim("guest"));
+        });
     }
 }

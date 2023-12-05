@@ -12,7 +12,6 @@ namespace claim_based_auth_sample.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class NotesController : ControllerBase
     {
         private readonly INotesService _notesService;
@@ -22,6 +21,7 @@ namespace claim_based_auth_sample.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<List<NoteDTO>>> ListNotes()
         {
             var claims = HttpContext.User.Claims.ToList();
@@ -30,6 +30,7 @@ namespace claim_based_auth_sample.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "admin")]
         public async Task<ActionResult<NoteDTO>> CreateNote(CreateNoteDTO dto)
         {
             return await _notesService.CreateNote(dto, "");

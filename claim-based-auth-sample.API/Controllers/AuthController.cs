@@ -75,21 +75,21 @@ namespace claim_based_auth_sample.API.Controllers
             return await BuildToken(userCredentials);
         }
 
-        // [HttpPost("grant/admin")]
-        // public async Task<ActionResult> GrantAdmin(GrantAdminAuthorizationDTO grantAdminDTO)
-        // {
-        //     var user = await _userManager.FindByEmailAsync(grantAdminDTO.Email);
-        //     await _userManager.AddClaimAsync(user, new Claim("admin", ""));
-        //     return NoContent();
-        // }
+        [HttpPost("grant/admin")]
+        public async Task<ActionResult> GrantAdmin(GrantAdminAuthorizationDTO grantAdminDTO)
+        {
+            var user = await _userManager.FindByEmailAsync(grantAdminDTO.Email);
+            await _userManager.AddClaimAsync(user, new Claim("admin", ""));
+            return NoContent();
+        }
 
-        // [HttpPost("revoke/admin")]
-        // public async Task<ActionResult> RevokeAdmin(GrantAdminAuthorizationDTO grantAdminDTO)
-        // {
-        //     var user = await _userManager.FindByEmailAsync(grantAdminDTO.Email);
-        //     await _userManager.RemoveClaimAsync(user, new Claim("admin", null));
-        //     return NoContent();
-        // }
+        [HttpPost("revoke/admin")]
+        public async Task<ActionResult> RevokeAdmin(GrantAdminAuthorizationDTO grantAdminDTO)
+        {
+            var user = await _userManager.FindByEmailAsync(grantAdminDTO.Email);
+            await _userManager.RemoveClaimAsync(user, new Claim("admin", ""));
+            return NoContent();
+        }
 
         private async Task<AuthResponseDTO> BuildToken(UserCredentialsDTO authCredentials)
         {
