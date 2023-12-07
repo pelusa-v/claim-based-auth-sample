@@ -30,6 +30,8 @@ namespace claim_based_auth_sample.API.Controllers
             _signInManager = signInManager;
         }
 
+        // users are cretaed with default claims (email, name). These claims doesn't need to be stored in db.
+        // claims like roles need to be stored ni db
         [HttpPost("signup")]
         public async Task<ActionResult<AuthResponseDTO>> SignUp(UserCredentialsDTO credentials)
         {
