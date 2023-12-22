@@ -28,7 +28,7 @@ public static class DataAccessLayerDI
 
     public static void AddIdentityEntities(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+        services.AddIdentity<IdentityUser, IdentityRole>()
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
     }
