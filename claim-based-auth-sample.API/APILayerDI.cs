@@ -32,8 +32,8 @@ public static class APILayerDI
     {
         services.AddAuthorization(options => 
         {
-            options.AddPolicy("admin", policy => policy.RequireClaim("admin"));
-            options.AddPolicy("guest", policy => policy.RequireClaim("guest"));
+            // options.AddPolicy("admin", policy => policy.RequireClaim("admin"));
+            // options.AddPolicy("guest", policy => policy.RequireClaim("guest"));
         });
     }
 }
